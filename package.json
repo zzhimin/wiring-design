@@ -1,0 +1,21 @@
+{
+  "name": "wiring-design",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev-vue": "pnpm --filter=vue run dev ",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.11.0",
+  "dependencies": {
+    "@wiring-design/core": "workspace:*",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "unocss": "^66.2.3"
+  }
+}
