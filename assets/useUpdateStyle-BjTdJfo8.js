@@ -1,0 +1,1 @@
+import{b as a}from"./index-COCsaiwB.js";const r={wd:{type:Object,required:!0},nodeId:{type:String,required:!0},optionModel:{type:Object,required:!0}};function s(e){return{val:a({get:()=>e.optionModel.value,set:d=>{const t=e.wd.graph.getCellById(e.nodeId);if(t){const o={name:t.data.name,style:{...t.data.style,[e.optionModel.key]:d}};t.setData(o)}}})}}export{r as s,s as u};
