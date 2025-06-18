@@ -8,12 +8,16 @@ import UnoCSS from 'unocss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: 'wiring-design',
+  build: {
+    outDir: '../../dist'
+  },
   plugins: [
     vue(),
     vueDevTools(),
     AutoImport({
-      imports:['vue'],
-      dts:"src/auto-import.d.ts"   //  会自动生成此文件
+      imports: ['vue'],
+      dts: "src/auto-import.d.ts"   //  会自动生成此文件
     }),
     UnoCSS(),
   ],
