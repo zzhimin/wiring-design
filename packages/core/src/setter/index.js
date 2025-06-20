@@ -1,71 +1,121 @@
 
-
+/**
+ * 设置类型：
+ * 1. width、height:setSize
+ * 2. zIndex:setZIndex
+ * 3. setAttrs
+ * 4. setData
+ */
+const defaultSetter = [
+  {
+    component: 'input-number-setter',
+    key: 'width',
+    setType: 'setSize',
+    label: '宽度',
+    value: 80,
+    placeholder: '节点宽度, 如 80',
+  },
+  {
+    component: 'input-number-setter',
+    key: 'height',
+    setType: 'setSize',
+    label: '高度',
+    value: 36,
+    placeholder: '节点高度, 如 36',
+  },
+  {
+    component: 'input-number-setter',
+    key: 'zIndex',
+    setType: 'setZIndex',
+    label: '层级',
+    value: 0,
+    placeholder: '节点层级, 如 0',
+  },
+]
 
 export default function registerSetter(graph) {
   return [
     {
       shape: 'custom-text',
-      setter: {
-        style: [
-          {
-            type: 'input-setter',
-            key: 'value',
-            label: '文本内容',
-            value: '文字',
-            placeholder: '请输入文本内容',
-          },
-          {
-            type: 'input-setter',
-            key: 'color',
-            label: '颜色',
-            value: '#333333',
-            placeholder: '颜色值, 如 #333333',
-          },
-          {
-            type: 'input-number-setter',
-            key: 'fontSize',
-            label: '字体大小',
-            value: 16,
-            placeholder: '字体大小, 如 16',
-          },
-          {
-            type: 'input-number-setter',
-            key: 'fontWeight',
-            label: '字体粗细',
-            value: 400,
-            placeholder: '字体粗细, 如 400',
-          },
-          {
-            type: 'input-setter',
-            key: 'backgroundColor',
-            label: '背景颜色',
-            value: 'transparent',
-            placeholder: '背景颜色, 如 transparent',
-          }
-        ],
-        name: '文字',
-      }
-    }
+      name: '文本',
+      setter: [
+        ...defaultSetter,
+        {
+          component: 'input-setter',
+          key: 'content',
+          setType: 'setData',
+          label: '文本内容',
+          value: '文字',
+          placeholder: '请输入文本内容',
+        },
+        {
+          component: 'input-setter',
+          key: 'color',
+          setType: 'setData',
+          label: '颜色',
+          value: '#333333',
+          placeholder: '颜色值, 如 #333333',
+        },
+        {
+          component: 'input-number-setter',
+          key: 'fontSize',
+          setType: 'setData',
+          label: '字体大小',
+          value: 16,
+          placeholder: '字体大小, 如 16',
+        },
+        {
+          component: 'input-number-setter',
+          key: 'fontWeight',
+          setType: 'setData',
+          label: '字体粗细',
+          value: 400,
+          placeholder: '字体粗细, 如 400',
+        },
+        {
+          component: 'input-setter',
+          key: 'backgroundColor',
+          setType: 'setData',
+          label: '背景颜色',
+          value: 'transparent',
+          placeholder: '背景颜色, 如 transparent',
+        }
+      ]
+    },
+    {
+      shape: 'path',
+      name: '路径',
+      setter: [
+        ...defaultSetter,
+        {
+          component: 'input-setter',
+          key: 'color',
+          setType: 'setAttrs',
+          label: '节点颜色',
+          value: '#333333',
+          placeholder: '颜色值, 如 #333333',
+        },
+        {
+          component: 'input-number-setter',
+          key: 'strokeWidth',
+          setType: 'setAttrs',
+          label: '边框宽度',
+          value: 2,
+          placeholder: '字体大小, 如 16',
+        },
+        {
+          component: 'input-setter',
+          key: 'bgColor',
+          setType: 'setAttrs',
+          label: '背景颜色',
+          value: 'transparent',
+          placeholder: '背景颜色, 如 transparent',
+        }
+      ]
+    },
   ]
-}
-
-function transformStyle(style) {
-  return style.reduce((acc, cur) => {
-    if (cur.type === 'input-setter') {
-      acc[cur.key] = cur.value
-    }
-    if (cur.type === 'input-number-setter') {
-      acc[cur.key] = Number(cur.value)
-    }
-    return acc
-  }, {})
 }
 export function getSetter(shape, graph) {
   const find = registerSetter(graph).find(item => item.shape === shape)
-  if (find) {
-    return {
-      ...find.setter,
-      style: transformStyle(find.setter.style)
-    }
-  }
+  return find ? find : null
 }

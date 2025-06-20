@@ -9,17 +9,20 @@ function creatCustomText(graph) {
     effect: ['data'],
     html(cell) {
       const data = cell.getData();
+      // console.log('custom-text data >>:', data);
       const div = document.createElement('div');
-      div.style.height = '100%';
-      div.style.width = '100%';
-      div.style.display = 'flex';
-      div.style.justifyContent = 'center';
-      div.style.alignItems = 'center';
-      div.textContent = data.style.value || '文字';
-      div.style.color = data.style.color || '#333333';
-      div.style.fontSize = data.style.fontSize + 'px'|| '16px';
-      div.style.fontWeight = data.style.fontWeight;
-      div.style.backgroundColor = data.style.backgroundColor;
+      div.style.cssText = `
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: ${ data.setter.find(item => item.key === 'color')?.value || '#333333' };
+        font-size: ${data.setter.find(item => item.key === 'fontSize')?.value + 'px' || '16px'};
+        font-weight: ${data.setter.find(item => item.key === 'fontWeight')?.value || 'normal'};
+        background-color: ${data.setter.find(item => item.key === 'backgroundColor')?.value || 'transparent'};
+      `;
+      div.textContent = data.setter.find(item => item.key === 'content')?.value || '文字';
       return div;
     }
   })
@@ -49,6 +52,7 @@ function creatCustomSvg(graph) {
       width: 25,
       height: 25,
       path,
+      data: getSetter('path', graph),
       ports: {
         ...graph.ports,
         // items: [

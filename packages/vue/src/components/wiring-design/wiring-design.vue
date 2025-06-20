@@ -11,7 +11,7 @@ const props = defineProps({
 
 const wdContainer = ref(null)
 const stencilContainer = ref(null)
-const wd = ref(null)
+const wd = ref({})
 onMounted(() => {
   wd.value = new WiringDesign(wdContainer.value, {
     config: props.config,

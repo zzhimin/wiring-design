@@ -8,13 +8,13 @@
 </template>
 <script setup>
 import { setterProps } from './setter-props'
-import { useUpdateStyle } from './useUpdateStyle'
+import { useUpdateNode } from './useUpdateNode'
 defineOptions({
   name: 'input-number-setter'
 })
 
 const props = defineProps(setterProps)
 
-const { val } = useUpdateStyle(props)
+const { val } = useUpdateNode(props)
 
 </script>

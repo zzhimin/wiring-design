@@ -2,23 +2,24 @@
   <div class="flex flex-col p-2">
     <div class="flex items-center justify-between">
       <div>组件名称</div>
-      <div>{{ setter?.name }}</div>
+      <div>{{ nodeConfig?.name }}</div>
     </div>
     <hr class="my-2" />
-    <container v-if="setter">
+    <template v-if="nodeConfig">
       <component
-        v-for="(item, index) in setter.style"
-        :is="item.type"
+        v-for="(item, index) in nodeConfig.setter"
+        :is="item.component"
         :wd="props.wd"
         :nodeId="nodeId"
         :optionModel="item"
         class="mt-2"
       ></component>
-    </container>
+    </template>
   </div>
 </template>
 
 <script lang="ts" setup>
+
 const props = defineProps({
   wd: {
     type: Object,
@@ -27,20 +28,26 @@ const props = defineProps({
 })
 
 const nodeId = ref('')
-const setter = ref(null);
+const nodeConfig = ref(null);
+const selectNode$ = ref(null);
 watch(() => props.wd, (newValue) => {
   if (newValue) {
-    newValue.selectNode$.asObservable().subscribe((id) => {
+    selectNode$.value = newValue.selectNode$.asObservable().subscribe((id) => {
+      // console.log('id >>:', id);
       if (id) {
         nodeId.value = id;
         const node = newValue.graph.getCellById(id)
-        if (node) {
-          setter.value = newValue.nodeSetter.get(node.shape)
-          console.log('setter.value >>:', setter.value);
+        const nodeData = node.getData();
+        // console.log('nodeData >>:', nodeData);
+        if (nodeData) {
+          nodeConfig.value = nodeData;
         }
       }
     })
   }
+})
+onUnmounted(() => {
+  selectNode$.value?.unsubscribe()
 })
 </script>
 
