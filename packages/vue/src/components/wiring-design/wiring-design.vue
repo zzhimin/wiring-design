@@ -21,19 +21,26 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="wd-container">
-    <div class="wd-toolbar-container"></div>
-    <div class="wd-main-container">
-      <div class="wd-stencil-container">
+  <div class="w-full h-full bg-[#f1f3f4]">
+    <div class="h-[50px] bg-white flex items-center justify-between px-4">
+      <div class="flex items-center justify-start">
+        <div class="h-full center font-600 text-6 font-mono">接线图设计器</div>
+      </div>
+      <div class="flex items-center justify-start">
+        <span class="cursor-pointer color-[#188ffe] hover:color-[#40a9ff]">导出</span>
+      </div>
+    </div>
+    <div class="flex w-full h-[calc(100%-55px)] overflow-hidden mt-[5px]">
+      <div class="bg-white w-[200px] overflow-hidden">
         <div ref="stencilContainer"></div>
       </div>
-      <div class="wd-graph-container">
-        <div class="wd-graph-toolbar">
+      <div class="flex-1 overflow-hidden mt-0 mx-[5px] mb-[5px] flex flex-col">
+        <div class="w-full h-[40px] bg-white flex items-center px-[10px]">
           <WdLayoutToolbar :wd />
         </div>
         <div ref="wdContainer"></div>
       </div>
-      <div class="wd-setting-container">
+      <div class="bg-white w-[250px] overflow-hidden">
         <WdNodeSetter :wd />
       </div>
     </div>
@@ -41,58 +48,10 @@ onMounted(() => {
 
 </template>
 
-<style scoped lang="scss">
-.wd-container {
-  height: 100%;
-  width: 100%;
-  background-color: #f1f3f4;
-
-  .wd-toolbar-container {
-    height: 50px;
-    background: #fff;
-  }
-
-  .wd-main-container {
-    display: flex;
-    width: 100%;
-    height: calc(100% - 55px);
-    overflow: hidden;
-    margin-top: 5px;
-
-    .wd-stencil-container {
-      background: #fff;
-      width: 200px;
-      overflow: hidden;
-
-      &:deep(.x6-widget-stencil) {
-        top: 55px;
-        width: 200px;
-        background: #fff;
-      }
-    }
-
-    .wd-graph-container {
-      flex: 1;
-      overflow: hidden;
-      margin: 0 5px 5px;
-      display: flex;
-      flex-direction: column;
-
-      .wd-graph-toolbar {
-        width: 100%;
-        height: 40px;
-        background: #fff;
-        display: flex;
-        align-items: center;
-        padding: 0 10px;
-      }
-    }
-
-    .wd-setting-container {
-      background: #fff;
-      width: 250px;
-      overflow: hidden;
-    }
-  }
+<style scoped>
+:deep(.x6-widget-stencil) {
+  top: 55px;
+  width: 200px;
+  background: #fff;
 }
 </style>
