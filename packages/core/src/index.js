@@ -116,7 +116,7 @@ export class WiringDesign {
     }, config.config);
 
     this.initGraph()
-    // this.initStencil(config.stencilContainer, this.graph)
+    this.initStencil(config.stencilContainer, this.graph)
   }
 
   initGraph() {
@@ -216,7 +216,7 @@ export class WiringDesign {
       this.stencil = stencil;
       container.appendChild(stencil.container);
       nodes(graph, this).forEach(item => {
-        // this.addAsset(item.groupName, item.nodes)
+        this.addAsset(item.groupName, item.nodes)
       })
     })
   }
