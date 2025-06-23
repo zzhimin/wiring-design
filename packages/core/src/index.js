@@ -116,7 +116,7 @@ export class WiringDesign {
     }, config.config);
 
     this.initGraph()
-    this.initStencil(config.stencilContainer, this.graph)
+    // this.initStencil(config.stencilContainer, this.graph)
   }
 
   initGraph() {
@@ -126,82 +126,82 @@ export class WiringDesign {
     });
 
     // 图形变换
-    this.graph.use(
-      new Transform({
-        resizing: true,
-        rotating: true,
-      })
-    );
+    // this.graph.use(
+    //   new Transform({
+    //     resizing: true,
+    //     rotating: true,
+    //   })
+    // );
 
-    // 开启复制粘贴功能
-    this.graph.use(
-      new Clipboard({
-        enabled: true,
-        useLocalStorage: true,
-      })
-    );
+    // // 开启复制粘贴功能
+    // this.graph.use(
+    //   new Clipboard({
+    //     enabled: true,
+    //     useLocalStorage: true,
+    //   })
+    // );
 
-    // 框选功能
-    this.graph.use(
-      new Selection({
-        enabled: true,
-        rubberband: false,
-        strict: false,
-        showEdgeSelectionBox: true,
-        showNodeSelectionBox: true,
-        multipleSelectionModifiers: 'alt',
-        pointerEvents: 'none',
-      })
-    );
+    // // 框选功能
+    // this.graph.use(
+    //   new Selection({
+    //     enabled: true,
+    //     rubberband: false,
+    //     strict: false,
+    //     showEdgeSelectionBox: true,
+    //     showNodeSelectionBox: true,
+    //     multipleSelectionModifiers: 'alt',
+    //     pointerEvents: 'none',
+    //   })
+    // );
 
-    // 开启快捷键
-    this.graph.use(
-      new Keyboard({
-        enabled: true,
-        global: true
-      })
-    );
-    // 对齐线
-    this.graph.use(
-      new Snapline({
-        enabled: true,
-        sharp: true,
-      })
-    );
+    // // 开启快捷键
+    // this.graph.use(
+    //   new Keyboard({
+    //     enabled: true,
+    //     global: true
+    //   })
+    // );
+    // // 对齐线
+    // this.graph.use(
+    //   new Snapline({
+    //     enabled: true,
+    //     sharp: true,
+    //   })
+    // );
 
-    // 开启历史功能（用于撤销操作）
-    this.graph.use(
-      new History({
-        enabled: true
-      })
-    );
+    // // 开启历史功能（用于撤销操作）
+    // this.graph.use(
+    //   new History({
+    //     enabled: true
+    //   })
+    // );
 
-    // 注册操作栏功能
-    this.addActions(actions);
+    // // 注册操作栏功能
+    // this.addActions(actions);
 
-    // 注册setter
-    this.addSetter(registerSetter(this));
+    // // 注册setter
+    // this.addSetter(registerSetter(this));
 
-    this.graph.on('node:click', (event) => {
-      // const selectCell = this.graph.getSelectedCells();
-      this.selectNode$.next(event.cell.id);
-    });
-    this.graph.on('node:change:size', (event) => {
-      const node = event.node;
-      const data = node ? node.getData() : {};
-      const {width, height} = event.current;
-      const setter = {
-        ...data,
-        setter: data.setter.map(item => {
-          return {
-            ...item,
-            value: (item.key === 'width') ? width : (item.key === 'height') ? height : item.value
-          };
-        })
-      }
-      node.setData(setter);
-      this.selectNode$.next(event.cell.id);
-    });
+    // this.graph.on('node:click', (event) => {
+    //   // const selectCell = this.graph.getSelectedCells();
+    //   this.selectNode$.next(event.cell.id);
+    // });
+    // this.graph.on('node:change:size', (event) => {
+    //   const node = event.node;
+    //   const data = node ? node.getData() : {};
+    //   const {width, height} = event.current;
+    //   const setter = {
+    //     ...data,
+    //     setter: data.setter.map(item => {
+    //       return {
+    //         ...item,
+    //         value: (item.key === 'width') ? width : (item.key === 'height') ? height : item.value
+    //       };
+    //     })
+    //   }
+    //   node.setData(setter);
+    //   this.selectNode$.next(event.cell.id);
+    // });
   }
 
   initStencil(container, graph) {
