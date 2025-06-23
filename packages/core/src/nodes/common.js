@@ -130,7 +130,7 @@ export const nodes = (graph) => {
     {
       groupName: '通用',
       nodes: [
-        creatCustomText(graph),
+        // creatCustomText(graph),
         ...creatCustomSvg(graph),
       ]
     },
