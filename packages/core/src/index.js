@@ -134,12 +134,12 @@ export class WiringDesign {
     );
 
     // 开启复制粘贴功能
-    // this.graph.use(
-    //   new Clipboard({
-    //     enabled: true,
-    //     useLocalStorage: true,
-    //   })
-    // );
+    this.graph.use(
+      new Clipboard({
+        enabled: true,
+        // useLocalStorage: true,
+      })
+    );
 
     // 框选功能
     this.graph.use(
