@@ -17,7 +17,7 @@ function creatCustomText(graph) {
         display: flex;
         justify-content: center;
         align-items: center;
-        color: ${ data.setter.find(item => item.key === 'color')?.value || '#333333' };
+        color: ${data.setter.find(item => item.key === 'color')?.value || '#333333'};
         font-size: ${data.setter.find(item => item.key === 'fontSize')?.value + 'px' || '16px'};
         font-weight: ${data.setter.find(item => item.key === 'fontWeight')?.value || 'normal'};
         background-color: ${data.setter.find(item => item.key === 'backgroundColor')?.value || 'transparent'};
@@ -28,8 +28,10 @@ function creatCustomText(graph) {
   })
   return graph.createNode({
     shape: 'custom-text',
+    width: 80,
+    height: 36,
     data: getSetter('custom-text', graph),
-    // ports: { ...graph.ports },
+    ports: { ...graph.ports },
   });
 }
 
