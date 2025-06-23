@@ -125,7 +125,7 @@ export class WiringDesign {
       ...this.config,
     });
 
-    图形变换
+    // 图形变换
     this.graph.use(
       new Transform({
         resizing: true,
