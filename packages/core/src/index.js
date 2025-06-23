@@ -137,7 +137,7 @@ export class WiringDesign {
     this.graph.use(
       new Clipboard({
         enabled: true,
-        // useLocalStorage: true,
+        // useLocalStorage: true, // 开起来生产环境会报错
       })
     );
 
