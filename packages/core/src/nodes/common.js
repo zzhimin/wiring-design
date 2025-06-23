@@ -131,13 +131,13 @@ export const nodes = (graph) => {
       groupName: '通用',
       nodes: [
         // creatCustomText(graph),
-        ...creatCustomSvg(graph),
+        // ...creatCustomSvg(graph),
       ]
     },
     {
       groupName: '动态值',
       nodes: [
-        createLatestValueText(graph),
+        // createLatestValueText(graph),
       ]
     },
   ]
