@@ -126,20 +126,20 @@ export class WiringDesign {
     });
 
     // 图形变换
-    // this.graph.use(
-    //   new Transform({
-    //     resizing: true,
-    //     rotating: true,
-    //   })
-    // );
-
-    // 开启复制粘贴功能
     this.graph.use(
-      new Clipboard({
-        enabled: true,
-        useLocalStorage: true,
+      new Transform({
+        resizing: true,
+        rotating: true,
       })
     );
+
+    // 开启复制粘贴功能
+    // this.graph.use(
+    //   new Clipboard({
+    //     enabled: true,
+    //     useLocalStorage: true,
+    //   })
+    // );
 
     // 框选功能
     this.graph.use(
