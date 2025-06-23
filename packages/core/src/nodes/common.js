@@ -28,10 +28,7 @@ function creatCustomText(graph) {
   })
   return graph.createNode({
     shape: 'custom-text',
-    width: 80,
-    height: 36,
     data: getSetter('custom-text', graph),
-    ports: { ...graph.ports },
   });
 }
 
