@@ -126,12 +126,12 @@ export class WiringDesign {
     });
 
     // 图形变换
-    this.graph.use(
-      new Transform({
-        resizing: true,
-        rotating: true,
-      })
-    );
+    // this.graph.use(
+    //   new Transform({
+    //     resizing: true,
+    //     rotating: true,
+    //   })
+    // );
 
     // 开启复制粘贴功能
     this.graph.use(
@@ -177,7 +177,7 @@ export class WiringDesign {
     );
 
     // 注册操作栏功能
-    // this.addActions(actions);
+    this.addActions(actions);
 
     // 注册setter
     this.addSetter(registerSetter(this));
