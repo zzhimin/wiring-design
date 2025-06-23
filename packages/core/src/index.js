@@ -216,7 +216,7 @@ export class WiringDesign {
       this.stencil = stencil;
       container.appendChild(stencil.container);
       nodes(graph, this).forEach(item => {
-        this.addAsset(item.groupName, item.nodes)
+        // this.addAsset(item.groupName, item.nodes)
       })
     })
   }
