@@ -125,59 +125,59 @@ export class WiringDesign {
       ...this.config,
     });
 
-    // 图形变换
-    // this.graph.use(
-    //   new Transform({
-    //     resizing: true,
-    //     rotating: true,
-    //   })
-    // );
+    图形变换
+    this.graph.use(
+      new Transform({
+        resizing: true,
+        rotating: true,
+      })
+    );
 
-    // // 开启复制粘贴功能
-    // this.graph.use(
-    //   new Clipboard({
-    //     enabled: true,
-    //     useLocalStorage: true,
-    //   })
-    // );
+    // 开启复制粘贴功能
+    this.graph.use(
+      new Clipboard({
+        enabled: true,
+        useLocalStorage: true,
+      })
+    );
 
-    // // 框选功能
-    // this.graph.use(
-    //   new Selection({
-    //     enabled: true,
-    //     rubberband: false,
-    //     strict: false,
-    //     showEdgeSelectionBox: true,
-    //     showNodeSelectionBox: true,
-    //     multipleSelectionModifiers: 'alt',
-    //     pointerEvents: 'none',
-    //   })
-    // );
+    // 框选功能
+    this.graph.use(
+      new Selection({
+        enabled: true,
+        rubberband: false,
+        strict: false,
+        showEdgeSelectionBox: true,
+        showNodeSelectionBox: true,
+        multipleSelectionModifiers: 'alt',
+        pointerEvents: 'none',
+      })
+    );
 
-    // // 开启快捷键
-    // this.graph.use(
-    //   new Keyboard({
-    //     enabled: true,
-    //     global: true
-    //   })
-    // );
-    // // 对齐线
-    // this.graph.use(
-    //   new Snapline({
-    //     enabled: true,
-    //     sharp: true,
-    //   })
-    // );
+    // 开启快捷键
+    this.graph.use(
+      new Keyboard({
+        enabled: true,
+        global: true
+      })
+    );
+    // 对齐线
+    this.graph.use(
+      new Snapline({
+        enabled: true,
+        sharp: true,
+      })
+    );
 
-    // // 开启历史功能（用于撤销操作）
-    // this.graph.use(
-    //   new History({
-    //     enabled: true
-    //   })
-    // );
+    // 开启历史功能（用于撤销操作）
+    this.graph.use(
+      new History({
+        enabled: true
+      })
+    );
 
-    // // 注册操作栏功能
-    // this.addActions(actions);
+    // 注册操作栏功能
+    this.addActions(actions);
 
     // // 注册setter
     // this.addSetter(registerSetter(this));
