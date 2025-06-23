@@ -186,6 +186,22 @@ export class WiringDesign {
       // const selectCell = this.graph.getSelectedCells();
       this.selectNode$.next(event.cell.id);
     });
+    this.graph.on('node:change:size', (event) => {
+      const node = event.node;
+      const data = node ? node.getData() : {};
+      const {width, height} = event.current;
+      const setter = {
+        ...data,
+        setter: data.setter.map(item => {
+          return {
+            ...item,
+            value: (item.key === 'width') ? width : (item.key === 'height') ? height : item.value
+          };
+        })
+      }
+      node.setData(setter);
+      this.selectNode$.next(event.cell.id);
+    });
   }
 
   initStencil(container, graph) {
