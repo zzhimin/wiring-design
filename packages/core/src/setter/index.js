@@ -49,7 +49,7 @@ export default function registerSetter(graph) {
           placeholder: '请输入文本内容',
         },
         {
-          component: 'input-setter',
+          component: 'input-color-setter',
           key: 'color',
           setType: 'setData',
           label: '颜色',
@@ -73,7 +73,7 @@ export default function registerSetter(graph) {
           placeholder: '字体粗细, 如 400',
         },
         {
-          component: 'input-setter',
+          component: 'input-color-setter',
           key: 'backgroundColor',
           setType: 'setData',
           label: '背景颜色',
@@ -88,7 +88,7 @@ export default function registerSetter(graph) {
       setter: [
         ...defaultSetter,
         {
-          component: 'input-setter',
+          component: 'input-color-setter',
           key: 'color',
           setType: 'setAttrs',
           label: '节点颜色',
@@ -104,7 +104,7 @@ export default function registerSetter(graph) {
           placeholder: '字体大小, 如 16',
         },
         {
-          component: 'input-setter',
+          component: 'input-color-setter',
           key: 'bgColor',
           setType: 'setAttrs',
           label: '背景颜色',
