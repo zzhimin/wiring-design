@@ -27,7 +27,27 @@ onMounted(() => {
         <div class="h-full center font-600 text-6 font-mono">接线图设计器</div>
       </div>
       <div class="flex items-center justify-start">
-        <span class="cursor-pointer color-[#188ffe] hover:color-[#40a9ff]">导出</span>
+        <a-space>
+          <a-upload action="/" :file-list="null" :before-upload="wd.importFromJSON">
+            <a-button>导入</a-button>
+          </a-upload>
+          <a-dropdown-button @click="wd.exportJSON()">
+            导出
+            <template #overlay>
+              <a-menu>
+                <a-menu-item key="1" @click="wd.exportSVG()">
+                  导出为SVG
+                </a-menu-item>
+                <a-menu-item key="2" @click="wd.exportPNG()">
+                  导出为PNG
+                </a-menu-item>
+                <a-menu-item key="3" @click="wd.exportJPEG()">
+                  导出为JPEG
+                </a-menu-item>
+              </a-menu>
+            </template>
+          </a-dropdown-button>
+        </a-space>
       </div>
     </div>
     <div class="flex w-full h-[calc(100%-55px)] overflow-hidden mt-[5px]">

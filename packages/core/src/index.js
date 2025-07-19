@@ -6,10 +6,12 @@ import { Keyboard } from "@antv/x6-plugin-keyboard";
 import { Transform } from "@antv/x6-plugin-transform";
 import { Snapline } from '@antv/x6-plugin-snapline';
 import { History } from '@antv/x6-plugin-history';
+import { Export } from '@antv/x6-plugin-export';
 import { nodes } from './nodes/common'
 import actions from './actions/index.js';
 import registerSetter from './setter/index.js';
 import { BehaviorSubject } from "rxjs";
+import { saveJSON } from "./utils/index.js";
 
 export class WiringDesign {
   container;
@@ -112,7 +114,7 @@ export class WiringDesign {
       grid: true,
       autoResize: true,
       panning: true,
-      mousewheel: true
+      mousewheel: true,
     }, config.config);
 
     this.initGraph()
@@ -176,6 +178,9 @@ export class WiringDesign {
       })
     );
 
+    // 导出功能
+    this.graph.use(new Export());
+
     // 注册操作栏功能
     this.addActions(actions);
 
@@ -189,7 +194,7 @@ export class WiringDesign {
     this.graph.on('node:change:size', (event) => {
       const node = event.node;
       const data = node ? node.getData() : {};
-      const {width, height} = event.current;
+      const { width, height } = event.current;
       const setter = {
         ...data,
         setter: data.setter.map(item => {
@@ -261,5 +266,66 @@ export class WiringDesign {
     } else {
       this.nodeSetter.set(setter.shape, setter.setter);
     }
+  }
+
+  /**
+   * 导出json数据
+   */
+  exportJSON(cb) {
+    const json = this.graph.toJSON();
+    json['bgColor'] = this.config.background.color;
+    this.graph.toJSON();
+    saveJSON(json, "wiring-design.json");
+    cb && cb(json);
+  }
+
+  /**
+   * 导出svg
+   */
+  exportSVG(fileName = 'wiring-design', options = {}) {
+    this.graph.exportSVG(fileName, options);
+  }
+
+  /**
+   * 导出png图片
+   */
+  exportPNG(fileName = 'wiring-design', options = {}) {
+    this.graph.exportPNG(fileName, options);
+  }
+
+  /**
+   * 导出jpeg图片
+   */
+  exportJPEG(fileName = 'wiring-design', options = {}) {
+    this.graph.exportJPEG(fileName, options);
+  }
+
+  /**
+   * 导入数据
+   */
+  importFromJSON = (file) => {
+    if (file.type !== 'application/json') {
+      alert('只能导入json类型文件!');
+      return false;
+    }
+    const fileReader = new FileReader();
+    fileReader.readAsText(file);
+    fileReader.onload = (evt) => {
+      var fileString = evt.target.result;
+      if (typeof fileString === "string") {
+        const fileJson = JSON.parse(fileString);
+        this.graph.clearCells();
+        if (fileJson.bgColor) {
+          this.graph.drawBackground({
+            color: fileJson.bgColor,
+          });
+          delete fileJson.bgColor;
+        }
+        this.graph.fromJSON(fileJson);
+        this.graph.zoomToFit(); // 缩放画布以适应所有节点和边
+        this.graph.centerContent();
+      }
+    };
+    return false;
   }
 }
