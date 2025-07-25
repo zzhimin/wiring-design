@@ -57,7 +57,6 @@ function creatCustomSvg(graph, wd) {
       data: {
         ...getSetter('path', wd),
         update: (node, wd) => {
-          console.log('node, wd >>:', node, wd);
           // 组件动画更新
           const data = node.getData();
           const animationName = data.setter.find(item => item.key === 'animationName')?.value;
