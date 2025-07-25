@@ -1,5 +1,6 @@
 import { Shape } from '@antv/x6';
 import { getSetter } from '../setter/index.js';
+import {deepClone} from '../utils/index.js';
 // 创建自定义文本
 function creatCustomText(graph, wd) {
   Shape.HTML.register({
@@ -53,7 +54,24 @@ function creatCustomSvg(graph, wd) {
       width: 25,
       height: 25,
       path,
-      data: getSetter('path', wd),
+      data: {
+        ...getSetter('path', wd),
+        update: (node, wd) => {
+          console.log('node, wd >>:', node, wd);
+          // 组件动画更新
+          const data = node.getData();
+          const animationName = data.setter.find(item => item.key === 'animationName')?.value;
+          const markup = deepClone(node.getMarkup());
+          const pathOfIds = markup.findIndex(item => item.tagName === 'path');
+          markup.splice(pathOfIds, 1, {
+            ...markup[pathOfIds],
+            style: {
+              animation: `${animationName} 1.5s infinite linear`,
+            }
+          })
+          node.setMarkup(markup);
+        }
+      },
       ports: {
       ...graph.ports,
       // items: [

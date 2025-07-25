@@ -67,3 +67,28 @@ export function addDynamicStyle(cssText) {
   
   return styleElement;
 }
+
+
+export function deepClone(target, ignoreFields) {
+  if (target === null) {
+    return target;
+  }
+  if (target instanceof Date) {
+    return new Date(target.getTime());
+  }
+  if (target instanceof Array) {
+    const cp = [];
+    target.forEach((v) => { cp.push(v); });
+    return cp.map((n) => deepClone(n));
+  }
+  if (typeof target === 'object' && target !== {}) {
+    const cp = {...target};
+    Object.keys(cp).forEach(k => {
+      if (!ignoreFields || ignoreFields.indexOf(k) === -1) {
+        cp[k] = deepClone(cp[k]);
+      }
+    });
+    return cp;
+  }
+  return target;
+}

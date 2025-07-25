@@ -19,6 +19,12 @@ export function useUpdateNode(props) {
         }
         node.setData(setter, {overwrite: true});
         props.optionModel.value = value;
+
+        // 业务data如果有update，则执行业务数据data的update方法
+        if (data.update) {
+          data.update(node, props.wd);
+        }
+
         if (setType === 'setAttrs') {
           const attrs = node.getAttrs();
           if (props.optionModel.key === 'color') {
