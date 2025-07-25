@@ -1,7 +1,7 @@
 import { Shape } from '@antv/x6';
 import { getSetter } from '../setter/index.js';
 // 创建自定义文本
-function creatCustomText(graph) {
+function creatCustomText(graph, wd) {
   Shape.HTML.register({
     shape: 'custom-text',
     width: 80,
@@ -11,6 +11,7 @@ function creatCustomText(graph) {
       const data = cell.getData();
       // console.log('custom-text data >>:', data);
       const div = document.createElement('div');
+      const animationName = data.setter.find(item => item.key === 'animationName')?.value;
       div.style.cssText = `
         height: 100%;
         width: 100%;
@@ -21,6 +22,7 @@ function creatCustomText(graph) {
         font-size: ${data.setter.find(item => item.key === 'fontSize')?.value + 'px' || '16px'};
         font-weight: ${data.setter.find(item => item.key === 'fontWeight')?.value || 'normal'};
         background-color: ${data.setter.find(item => item.key === 'backgroundColor')?.value || 'transparent'};
+        animation: ${animationName} 1.5s infinite linear;
       `;
       div.textContent = data.setter.find(item => item.key === 'content')?.value || '文字';
       return div;
@@ -28,11 +30,11 @@ function creatCustomText(graph) {
   })
   return graph.createNode({
     shape: 'custom-text',
-    data: getSetter('custom-text', graph),
+    data: getSetter('custom-text', wd),
   });
 }
 
-function creatCustomSvg(graph) {
+function creatCustomSvg(graph, wd) {
   const commonSvgArr = [
     'M502.4 427.3L508.5 437.9 514.7 427.3z',
     'M1014.9373 382.54745L1006.1973 391.28748 M1006.2083 382.54745L1014.9482 391.28748',
@@ -51,22 +53,22 @@ function creatCustomSvg(graph) {
       width: 25,
       height: 25,
       path,
-      data: getSetter('path', graph),
+      data: getSetter('path', wd),
       ports: {
-        ...graph.ports,
-        // items: [
-        //   {
-        //     group: 'top',
-        //   },
-        //   {
-        //     group: 'bottom',
-        //   },
-        // ],
-      },
+      ...graph.ports,
+      // items: [
+      //   {
+      //     group: 'top',
+      //   },
+      //   {
+      //     group: 'bottom',
+      //   },
+      // ],
+    },
     })
-    acc.push(svg);
-    return acc;
-  }, [])
+  acc.push(svg);
+  return acc;
+}, [])
 }
 
 // 创建自定义最新值部件
@@ -120,21 +122,21 @@ function createLatestValueText(graph, wd) {
 
 
 
-export const nodes = (graph) => {
+export const nodes = (graph, wd) => {
 
 
   return [
     {
       groupName: '通用',
       nodes: [
-        creatCustomText(graph),
-        ...creatCustomSvg(graph),
+        creatCustomText(graph, wd),
+        ...creatCustomSvg(graph, wd),
       ]
     },
     {
       groupName: '动态值',
       nodes: [
-        createLatestValueText(graph),
+        createLatestValueText(graph, wd),
       ]
     },
   ]

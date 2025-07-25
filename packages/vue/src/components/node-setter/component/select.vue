@@ -2,7 +2,13 @@
   <div class="flex">
     <div class="w-[40%]">{{ props.optionModel.label }}</div>
     <div class="flex-1">
-      <a-input class="w-full" v-model:value="val" :placeholder="props.optionModel.placeholder" />
+      <a-select
+        class="w-full"
+        v-model:value="val"
+        :options="props.optionModel.options"
+        :placeholder="props.optionModel.placeholder"
+        allowClear
+      ></a-select>
     </div>
   </div>
 </template>
@@ -10,11 +16,14 @@
 import { setterProps } from './setter-props'
 import { useUpdateNode } from './useUpdateNode'
 defineOptions({
-  name: 'input-setter'
+  name: 'select-setter'
 })
 
 const props = defineProps(setterProps)
 
 const { val } = useUpdateNode(props)
+
+onMounted(() => {
+})
 
 </script>

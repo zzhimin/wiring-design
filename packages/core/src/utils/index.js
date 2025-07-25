@@ -38,3 +38,32 @@ export function saveJSON(data, filename = "wiring-design.json") {
     alert(`保存文件时出错: ${error.message}`);
   }
 }
+
+/**
+ * 动态创建style标签并加载CSS字符串
+ * @param {string|string[]} cssText - CSS字符串或CSS字符串数组
+ */
+export function addDynamicStyle(cssText) {
+  // 创建style元素
+  const styleElement = document.createElement('style');
+  styleElement.type = 'text/css';
+  
+  // 处理传入的CSS文本（支持字符串或数组）
+  let cssContent = Array.isArray(cssText) 
+    ? cssText.join('\n') 
+    : cssText;
+  
+  // 将CSS内容添加到style元素
+  if (styleElement.styleSheet) {
+    // IE支持
+    styleElement.styleSheet.cssText = cssContent;
+  } else {
+    // 现代浏览器支持
+    styleElement.appendChild(document.createTextNode(cssContent));
+  }
+  
+  // 将style元素添加到head
+  document.head.appendChild(styleElement);
+  
+  return styleElement;
+}

@@ -6,40 +6,51 @@
  * 3. setAttrs
  * 4. setData
  */
-const defaultSetter = [
-  {
-    component: 'input-number-setter',
-    key: 'width',
-    setType: 'setSize',
-    label: '宽度',
-    value: 80,
-    placeholder: '节点宽度, 如 80',
-  },
-  {
-    component: 'input-number-setter',
-    key: 'height',
-    setType: 'setSize',
-    label: '高度',
-    value: 36,
-    placeholder: '节点高度, 如 36',
-  },
-  {
-    component: 'input-number-setter',
-    key: 'zIndex',
-    setType: 'setZIndex',
-    label: '层级',
-    value: 0,
-    placeholder: '节点层级, 如 0',
-  },
-]
+const defaultSetter = (wd) => {
+  return [
+    {
+      component: 'input-number-setter',
+      key: 'width',
+      setType: 'setSize',
+      label: '宽度',
+      value: 80,
+      placeholder: '节点宽度, 如 80',
+    },
+    {
+      component: 'input-number-setter',
+      key: 'height',
+      setType: 'setSize',
+      label: '高度',
+      value: 36,
+      placeholder: '节点高度, 如 36',
+    },
+    {
+      component: 'input-number-setter',
+      key: 'zIndex',
+      setType: 'setZIndex',
+      label: '层级',
+      value: 0,
+      placeholder: '节点层级, 如 0',
+    },
+    {
+      component: 'select-setter',
+      key: 'animationName',
+      setType: 'setData',
+      label: '动画',
+      value: '',
+      placeholder: '为节点选择动画',
+      options: wd._animation
+    }
+  ]
+}
 
-export default function registerSetter(graph) {
+export default function registerSetter(wd) {
   return [
     {
       shape: 'custom-text',
       name: '文本',
       setter: [
-        ...defaultSetter,
+        ...defaultSetter(wd),
         {
           component: 'input-setter',
           key: 'content',
@@ -86,7 +97,7 @@ export default function registerSetter(graph) {
       shape: 'path',
       name: '路径',
       setter: [
-        ...defaultSetter,
+        ...defaultSetter(wd),
         {
           component: 'input-color-setter',
           key: 'color',

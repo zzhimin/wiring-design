@@ -4,7 +4,7 @@
       <div>组件名称</div>
       <div>{{ nodeConfig?.name }}</div>
     </div>
-    <hr class="my-2" />
+    <a-divider />
     <template v-if="nodeConfig">
       <component
         v-for="(item, index) in nodeConfig.setter"
@@ -51,4 +51,8 @@ onUnmounted(() => {
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.ant-divider-horizontal {
+  margin: 12px 0;
+}
+</style>

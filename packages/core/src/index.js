@@ -7,11 +7,13 @@ import { Transform } from "@antv/x6-plugin-transform";
 import { Snapline } from '@antv/x6-plugin-snapline';
 import { History } from '@antv/x6-plugin-history';
 import { Export } from '@antv/x6-plugin-export';
-import { nodes } from './nodes/common'
+import { nodes } from './nodes'
 import actions from './actions/index.js';
 import registerSetter from './setter/index.js';
 import { BehaviorSubject } from "rxjs";
 import { saveJSON } from "./utils/index.js";
+import { nodeAnimation } from './nodes/node-animation.js';
+import { addDynamicStyle } from './utils/index.js';
 
 export class WiringDesign {
   container;
@@ -108,6 +110,9 @@ export class WiringDesign {
 
   // 节点配置
   nodeSetter = new Map();
+
+  // 动画
+  _animation = [];
   constructor(container, config) {
     this.container = container;
     this.config = Object.assign({
@@ -184,8 +189,12 @@ export class WiringDesign {
     // 注册操作栏功能
     this.addActions(actions);
 
-    // 注册setter
+    // 注册节点动画
+    this.addNodeAnimation(nodeAnimation(this));
+    
+    // 注册setter 
     this.addSetter(registerSetter(this));
+
 
     this.graph.on('node:click', (event) => {
       // const selectCell = this.graph.getSelectedCells();
@@ -224,6 +233,17 @@ export class WiringDesign {
         this.addAsset(item.groupName, item.nodes)
       })
     })
+  }
+
+  addNodeAnimation(animate) {
+    if (Array.isArray(animate)) {
+      animate.forEach(item => this._animation.push(item));
+      const cssText = animate.map(item => item.cssText);
+      addDynamicStyle(cssText);
+    } else {
+      this._animation.push(animate);
+      addDynamicStyle(animate.cssText);
+    }
   }
 
 
