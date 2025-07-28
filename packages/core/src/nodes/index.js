@@ -1,10 +1,12 @@
 import { Shape } from '@antv/x6';
-import { getSetter } from '../setter/index.js';
-import {deepClone} from '../utils/index.js';
+import { getSetter, findSetter } from '../setter/index.js';
+import { deepClone } from '../utils/index.js';
+import { NodeShape } from '../shared/nodeShape.js';
 // 创建自定义文本
 function creatCustomText(graph, wd) {
+  const shape = NodeShape.customText;
   Shape.HTML.register({
-    shape: 'custom-text',
+    shape: shape,
     width: 80,
     height: 36,
     effect: ['data'],
@@ -30,8 +32,8 @@ function creatCustomText(graph, wd) {
     }
   })
   return graph.createNode({
-    shape: 'custom-text',
-    data: getSetter('custom-text', wd),
+    shape,
+    data: getSetter(shape, wd),
   });
 }
 
@@ -56,7 +58,7 @@ function creatCustomSvg(graph, wd) {
       path,
       data: {
         ...getSetter('path', wd),
-        update: (node, wd) => {
+        update: (node, wd) => { // node 更新
           // 组件动画更新
           const data = node.getData();
           const animationName = data.setter.find(item => item.key === 'animationName')?.value;
@@ -72,25 +74,17 @@ function creatCustomSvg(graph, wd) {
         }
       },
       ports: {
-      ...graph.ports,
-      // items: [
-      //   {
-      //     group: 'top',
-      //   },
-      //   {
-      //     group: 'bottom',
-      //   },
-      // ],
-    },
+        ...graph.ports,
+      },
     })
-  acc.push(svg);
-  return acc;
-}, [])
+    acc.push(svg);
+    return acc;
+  }, [])
 }
 
 // 创建自定义最新值部件
 function createLatestValueText(graph, wd) {
-  const shape = 'custom-lastvalue-text';
+  const shape = NodeShape.latestValue;
   Shape.HTML.register({
     shape,
     width: 80,
@@ -98,41 +92,51 @@ function createLatestValueText(graph, wd) {
     effect: ['data'],
     html(cell) {
       const data = cell.getData();
+      // console.log('data >>:', data);
       const div = document.createElement('div');
-      div.style.height = '100%';
-      div.style.width = '100%';
-      div.textContent = data.text || '最新值';
-      // $(DIV).css({
-      //   height: '100%',
-      //   width: '100%',
-      // }).css(data.style).css(data.addtionStyle ?? {}).html(cell['keyValue'] ?? '最新值');
-      // _that.subscribeLastValue(data, cell)
-      // // 取消订阅
-      // if (cell['socket']) {
-      //   cell['socket'].unsubscribe();
-      // }
-      // cell['socket'] = _that.x6DrawerSubscribeService.socket.subscribe((x) => {
-      //   if (x.update && x.cmdId === cell["cmdId"]) {
-      //     let value = Number(x.update[0].latest.TIME_SERIES[cell["key"]]['value']).toFixed(data.numberParsen);;
-      //     $(DIV).text(value);
-      //     cell['keyValue'] = value;
-      //   }
-      // })
+      const divTitle = document.createElement('div');
+      const divValue = document.createElement('div');
+      const divUnit = document.createElement('div');
+      const animationName = findSetter(data.setter, 'animationName');
+      div.style.cssText = `
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: ${findSetter(data.setter, 'justify', 'flex-start')};
+        align-items: center;
+        background-color: ${findSetter(data.setter, 'backgroundColor', 'transparent')};
+        animation: ${animationName} 1.5s infinite linear;
+      `;
+      divTitle.textContent = findSetter(data.setter, 'title');
+      divTitle.style.cssText = `
+        color: ${findSetter(data.setter, 'titleColor', '#333')};
+        font-size: ${findSetter(data.setter, 'titleFontSize', '16px')};
+        font-weight: ${findSetter(data.setter, 'titleFontWeight', 'normal')};
+        margin-right: 5px;
+      `;
+      divValue.textContent = '最新值';
+      divValue.style.cssText = `
+        color: ${findSetter(data.setter, 'valueColor', '#333')};
+        font-size: ${findSetter(data.setter, 'valueFontSize', '16px')};
+        font-weight: ${findSetter(data.setter, 'valueFontWeight', 'normal')};
+        margin-right: 5px;
+      `;
+      divUnit.textContent = findSetter(data.setter, 'unit');
+      divUnit.style.cssText = `
+        color: ${findSetter(data.setter, 'unitColor', '#333')};
+        font-size: ${findSetter(data.setter, 'unitFontSize', '16px')};
+        font-weight: ${findSetter(data.setter, 'unitFontWeight', 'normal')};
+      `;
+
+      div.appendChild(divTitle);
+      div.appendChild(divValue);
+      div.appendChild(divUnit);
       return div;
     }
   })
   return graph.createNode({
     shape,
-    data: {
-      style: {
-        color: '#333333',
-        textAlign: 'center',
-        lineHeight: 2,
-        fontSize: 16,
-      },
-      numberParsen: 2
-    },
-    ports: { ...graph.ports },
+    data: getSetter(shape, wd),
   });
 }
 

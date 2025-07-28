@@ -1,4 +1,4 @@
-
+import { NodeShape } from '../shared/nodeShape';
 /**
  * 设置类型：
  * 1. width、height:setSize
@@ -47,7 +47,7 @@ const defaultSetter = (wd) => {
 export default function registerSetter(wd) {
   return [
     {
-      shape: 'custom-text',
+      shape: NodeShape.customText,
       name: '文本',
       setter: [
         ...defaultSetter(wd),
@@ -124,7 +124,134 @@ export default function registerSetter(wd) {
         }
       ]
     },
+    {
+      shape: NodeShape.latestValue,
+      name: '最新值',
+      setter: [
+        ...defaultSetter(wd),
+        {
+          component: 'input-setter',
+          key: 'title',
+          setType: 'setData',
+          label: '标题',
+          value: '',
+          placeholder: '请输入最新值标题',
+        },
+        {
+          component: 'input-color-setter',
+          key: 'titleColor',
+          setType: 'setData',
+          label: '标题颜色',
+          value: '#333333',
+          placeholder: '标题颜色值, 如 #333333',
+        },
+        {
+          component: 'input-number-setter',
+          key: 'titleFontSize',
+          setType: 'setData',
+          label: '标题大小',
+          value: 16,
+          placeholder: '字体大小, 如 16',
+        },
+        {
+          component: 'input-number-setter',
+          key: 'titleFontWeight',
+          setType: 'setData',
+          label: '标题粗细',
+          value: 400,
+          placeholder: '字体粗细, 如 400',
+        },
+        {
+          component: 'input-color-setter',
+          key: 'valueColor',
+          setType: 'setData',
+          label: '值颜色',
+          value: '#333333',
+          placeholder: '颜色值, 如 #333333',
+        },
+        {
+          component: 'input-number-setter',
+          key: 'valueFontSize',
+          setType: 'setData',
+          label: '值大小',
+          value: 16,
+          placeholder: '字体大小, 如 16',
+        },
+        {
+          component: 'input-number-setter',
+          key: 'valueFontWeight',
+          setType: 'setData',
+          label: '值粗细',
+          value: 400,
+          placeholder: '字体粗细, 如 400',
+        },
+        {
+          component: 'input-setter',
+          key: 'unit',
+          setType: 'setData',
+          label: '单位',
+          value: '',
+          placeholder: '请输入最新值单位',
+        },
+        {
+          component: 'input-color-setter',
+          key: 'unitColor',
+          setType: 'setData',
+          label: '单位颜色',
+          value: '#333333',
+          placeholder: '单位颜色值, 如 #333333',
+        },
+        {
+          component: 'input-number-setter',
+          key: 'unitFontSize',
+          setType: 'setData',
+          label: '单位大小',
+          value: 16,
+          placeholder: '字体大小, 如 16',
+        },
+        {
+          component: 'input-number-setter',
+          key: 'unitFontWeight',
+          setType: 'setData',
+          label: '单位粗细',
+          value: 400,
+          placeholder: '字体粗细, 如 400',
+        },
+        {
+          component: 'radio-button-setter',
+          key: 'justify',
+          setType: 'setData',
+          label: '对齐方式',
+          value: 'flex-start',
+        },
+        {
+          component: 'select-setter',
+          key: 'justify',
+          setType: 'setData',
+          label: '对齐方式',
+          value: 'flex-start',
+          options: [
+            { label: 'flex-start', value: 'flex-start' },
+            { label: 'space-between', value: 'space-between' },
+            { label: 'center', value: 'center' },
+            { label: 'flex-end', value: 'flex-end' },
+          ]
+        },
+        {
+          component: 'input-color-setter',
+          key: 'backgroundColor',
+          setType: 'setData',
+          label: '背景颜色',
+          value: 'transparent',
+          placeholder: '背景颜色, 如 transparent',
+        }
+      ]
+    },
   ]
+}
+
+export function findSetter(setter, key, defaultValue = '') {
+  return setter.find(item => item.key === key)?.value || defaultValue;
 }
 export function getSetter(shape, graph) {
   const find = registerSetter(graph).find(item => item.shape === shape)
