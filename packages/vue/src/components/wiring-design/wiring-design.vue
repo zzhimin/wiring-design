@@ -30,9 +30,9 @@ onMounted(() => {
       <div class="flex items-center justify-start">
         <a-space>
           <a-upload action="/" :file-list="null" :before-upload="wd.importFromJSON">
-            <a-button>导入</a-button>
+            <a-button title="导入JSON">导入</a-button>
           </a-upload>
-          <a-dropdown-button @click="wd.exportJSON()">
+          <a-dropdown-button @click="wd.exportJSON()" title="导出JSON">
             导出
             <template #overlay>
               <a-menu>
