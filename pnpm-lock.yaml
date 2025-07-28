@@ -11,6 +11,9 @@ importers:
       '@wiring-design/core':
         specifier: workspace:*
         version: link:packages/core
+      ace-builds:
+        specifier: ^1.43.2
+        version: 1.43.2
       rxjs:
         specifier: ^7.8.2
         version: 7.8.2
@@ -837,6 +840,9 @@ packages:
 
   '@vue/shared@3.5.14':
     resolution: {integrity: sha512-oXTwNxVfc9EtP1zzXAlSlgARLXNC84frFYkS0HHz0h3E4WZSP9sywqjqzGCP9Y34M8ipNmd380pVgmMuwELDyQ==}
+
+  ace-builds@1.43.2:
+    resolution: {integrity: sha512-3wzJUJX0RpMc03jo0V8Q3bSb/cKPnS7Nqqw8fVHsCCHweKMiTIxT3fP46EhjmVy6MCuxwP801ere+RW245phGw==}
 
   acorn@8.14.1:
     resolution: {integrity: sha512-OvQ/2pUDKmgfCg++xsTX1wGxfTaszcHVcTctW4UJB4hibJx2HXxxO5UmVgyjMa+ZDsiaf5wWLXYpRWMmBI0QHg==}
@@ -2346,6 +2352,8 @@ snapshots:
       vue: 3.5.14
 
   '@vue/shared@3.5.14': {}
+
+  ace-builds@1.43.2: {}
 
   acorn@8.14.1: {}
 
