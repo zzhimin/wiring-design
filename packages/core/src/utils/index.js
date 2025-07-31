@@ -92,3 +92,7 @@ export function deepClone(target, ignoreFields) {
   }
   return target;
 }
+
+export function isDefinedAndNotNull(value) {
+  return typeof value !== 'undefined' && value !== null && value !== '';
+}

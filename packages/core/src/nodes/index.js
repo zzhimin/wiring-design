@@ -1,6 +1,5 @@
 import { Shape } from '@antv/x6';
 import { getSetter, findSetter } from '../setter/index.js';
-import { deepClone } from '../utils/index.js';
 import { NodeShape } from '../shared/nodeShape.js';
 // 创建自定义文本
 function creatCustomText(graph, wd) {
@@ -37,7 +36,7 @@ function creatCustomText(graph, wd) {
   });
 }
 
-function creatCustomSvg(graph, wd) {
+function creatCustomSvg(wd) {
   const commonSvgArr = [
     'M502.4 427.3L508.5 437.9 514.7 427.3z',
     'M1014.9373 382.54745L1006.1973 391.28748 M1006.2083 382.54745L1014.9482 391.28748',
@@ -51,33 +50,7 @@ function creatCustomSvg(graph, wd) {
   ]
 
   return commonSvgArr.reduce((acc, path) => {
-    const svg = graph.createNode({
-      shape: 'path',
-      width: 25,
-      height: 25,
-      path,
-      data: {
-        ...getSetter('path', wd),
-        update: (node, wd) => { // node 更新
-          // 组件动画更新
-          const data = node.getData();
-          const animationName = data.setter.find(item => item.key === 'animationName')?.value;
-          const markup = deepClone(node.getMarkup());
-          const pathOfIds = markup.findIndex(item => item.tagName === 'path');
-          markup.splice(pathOfIds, 1, {
-            ...markup[pathOfIds],
-            style: {
-              animation: `${animationName} 1.5s infinite linear`,
-            }
-          })
-          node.setMarkup(markup);
-        }
-      },
-      ports: {
-        ...graph.ports,
-      },
-    })
-    acc.push(svg);
+    acc.push(wd.createPathNode(path));
     return acc;
   }, [])
 }
@@ -151,7 +124,8 @@ export const nodes = (graph, wd) => {
       groupName: '通用',
       nodes: [
         creatCustomText(graph, wd),
-        ...creatCustomSvg(graph, wd),
+        wd.createImageNode(new URL(`../assets/wd.jpg`, import.meta.url).href, '图片'),
+        ...creatCustomSvg(wd),
       ]
     },
     {

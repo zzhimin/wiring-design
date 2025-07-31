@@ -9,11 +9,11 @@ import { History } from '@antv/x6-plugin-history';
 import { Export } from '@antv/x6-plugin-export';
 import { nodes } from './nodes'
 import actions from './actions/index.js';
-import registerSetter from './setter/index.js';
+import registerSetter, { getSetter, findSetter } from './setter/index.js';
 import { BehaviorSubject } from "rxjs";
-import { saveJSON } from "./utils/index.js";
+import { deepClone, saveJSON, addDynamicStyle, isDefinedAndNotNull } from "./utils/index.js";
 import { nodeAnimation } from './nodes/node-animation.js';
-import { addDynamicStyle } from './utils/index.js';
+import { NodeShape } from './shared/nodeShape';
 
 export class WiringDesign {
   container;
@@ -113,6 +113,7 @@ export class WiringDesign {
 
   // 动画
   _animation = [];
+
   constructor(container, config) {
     this.container = container;
     this.config = Object.assign({
@@ -187,11 +188,11 @@ export class WiringDesign {
     this.graph.use(new Export());
 
     // 注册操作栏功能
-    this.addActions(actions);
+    this.addActions(this.config.actions);
 
     // 注册节点动画
     this.addNodeAnimation(nodeAnimation(this));
-    
+
     // 注册setter 
     this.addSetter(registerSetter(this));
 
@@ -232,7 +233,28 @@ export class WiringDesign {
       nodes(graph, this).forEach(item => {
         this.addAsset(item.groupName, item.nodes)
       })
+
+      // localStorage 的node
+      this.loadLocalStorageNode();
     })
+  }
+
+  loadLocalStorageNode(key = '', value = '') {
+    const storeImage = localStorage.getItem('wd-assets-image');
+    const storePath = localStorage.getItem('wd-assets-path');
+    let imageNodes = JSON.parse(storeImage ? storeImage : '[]');
+    let pathNodes = JSON.parse(storePath ? storePath : '[]');
+    if (key === 'wd-assets-image') {
+      imageNodes = [...imageNodes, value];
+      localStorage.setItem(key, JSON.stringify(imageNodes));
+    }
+    if (key === 'wd-assets-path') {
+      pathNodes = [...pathNodes, value];
+      localStorage.setItem(key, JSON.stringify(pathNodes));
+    }
+
+    if (imageNodes.length > 0) this.addAsset('自定义图片', imageNodes.map(node => this.createImageNode(node)));
+    if (pathNodes.length > 0) this.addAsset('自定义路径', pathNodes.map(node => this.createPathNode(node)));
   }
 
   addNodeAnimation(animate) {
@@ -248,7 +270,7 @@ export class WiringDesign {
 
 
   addAsset(groupName, asset) {
-    const group = this.stencil.getGroup(groupName)
+    const group = this.stencil.getGroup(groupName);
     if (group) {
       this.stencil.load(Array.isArray(asset) ? asset : [asset], groupName);
     } else {
@@ -263,16 +285,19 @@ export class WiringDesign {
    * 添加操作栏功能
    * @param {*} actions 添加操作栏功能按钮
    */
-  addActions(actions) {
-    if (Array.isArray(actions)) {
-      actions.forEach(action => {
-        action.init(this.graph);
-        this.actions.push(action);
-      });
-    } else {
+  addActions(customActions = []) {
+    // console.log('customActions >>:', customActions);
+    const arr = [...actions, ...customActions];
+    arr.sort((a, b) => {
+      if (!a.index) a.index = 999;
+      if (!b.index) b.index = 999;
+      return a.index - b.index;
+    })
+    // console.log('arr >>:', arr);
+    arr.forEach(action => {
       action.init(this.graph);
       this.actions.push(action);
-    }
+    });
   }
 
   /**
@@ -347,5 +372,88 @@ export class WiringDesign {
       }
     };
     return false;
+  }
+
+  // 图片node
+  createImageNode(imageUrl, label = '') {
+    const shape = NodeShape.image;
+    return this.graph.createNode({
+      shape,
+      width: 80,
+      height: 36,
+      imageUrl,
+      label,
+      attrs: {
+        label: {
+          refX: 0.5,
+          refY: '100%',
+          refY2: 4,
+          textAnchor: 'middle',
+          textVerticalAnchor: 'top',
+        },
+      },
+      data: {
+        ...getSetter(shape, this),
+        update: (node, wd) => { // node 节点更新
+          // console.log('node >>:', node);
+          // 节点动画更新
+          const data = node.getData();
+          const animationName = data.setter.find(item => item.key === 'animationName')?.value;
+          const markup = deepClone(node.getMarkup());
+          const imageOfIds = markup.findIndex(item => item.tagName === shape);
+          markup.splice(imageOfIds, 1, {
+            ...markup[imageOfIds],
+            style: {
+              animation: `${animationName} 1.5s infinite linear`,
+            }
+          })
+          node.setMarkup(markup);
+
+          // 设置名称
+          const label = findSetter(data.setter, 'label');
+          if (isDefinedAndNotNull(label)) node.setLabel(label);
+
+          // 更新图片地址
+          const imageUrl = findSetter(data.setter, 'imageUrl');
+          if (isDefinedAndNotNull(imageUrl)) {
+            node.setAttrs({
+              image: {
+                'xlink:href': imageUrl
+              },
+            });
+
+          }
+        }
+      },
+    })
+  }
+  // path node
+  createPathNode(path) {
+    return this.graph.createNode({
+      shape: 'path',
+      width: 25,
+      height: 25,
+      path,
+      data: {
+        ...getSetter('path', this),
+        update: (node, wd) => { // node 更新
+          // 组件动画更新
+          const data = node.getData();
+          const animationName = data.setter.find(item => item.key === 'animationName')?.value;
+          const markup = deepClone(node.getMarkup());
+          const pathOfIds = markup.findIndex(item => item.tagName === 'path');
+          markup.splice(pathOfIds, 1, {
+            ...markup[pathOfIds],
+            style: {
+              animation: `${animationName} 1.5s infinite linear`,
+            }
+          })
+          node.setMarkup(markup);
+        }
+      },
+      ports: {
+        ...this.graph.ports,
+      },
+    })
   }
 }

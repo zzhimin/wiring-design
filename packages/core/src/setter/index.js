@@ -94,6 +94,29 @@ export default function registerSetter(wd) {
       ]
     },
     {
+      shape: NodeShape.image,
+      name: '图片',
+      setter: [
+        ...defaultSetter(wd),
+        {
+          component: 'input-setter',
+          key: 'label',
+          setType: 'setData',
+          label: '名称',
+          value: '',
+          placeholder: '图片名称',
+        },
+        {
+          component: 'input-setter',
+          key: 'imageUrl',
+          setType: 'setData',
+          label: '图片url',
+          value: '',
+          placeholder: '请输入图片url',
+        }
+      ]
+    },
+    {
       shape: 'path',
       name: '路径',
       setter: [

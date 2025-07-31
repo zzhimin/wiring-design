@@ -5,7 +5,7 @@
         <component :is="action.component" :wd />
       </template>
       <template v-else>
-        <div v-html="action.icon" @click="action.action(wd.graph)" :title="action.tooltip" class="w-[30px] h-full flex items-center justify-start"></div>
+        <div v-html="action.icon" @click="action.action(wd)" :title="action.tooltip" class="w-[30px] h-full flex items-center justify-start cursor-pointer"></div>
       </template>
     </template>
   </div>
