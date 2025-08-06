@@ -6,7 +6,7 @@
     </div>
     <div class="flex items-center justify-between">
       <div>组件ID</div>
-      <a-button type="link" v-copy="nodeId">复制</a-button>
+      <a-button type="link" v-copy="nodeId" v-if="nodeId">复制</a-button>
     </div>
     <a-divider />
     <template v-if="nodeConfig">
