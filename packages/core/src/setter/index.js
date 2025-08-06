@@ -40,7 +40,15 @@ const defaultSetter = (wd) => {
       value: '',
       placeholder: '为节点选择动画',
       options: wd._animation
-    }
+    },
+    {
+      component: 'code-editor-setter',
+      key: 'customCss',
+      setType: 'setData',
+      label: '自定义样式',
+      value: '',
+      mode: 'css',
+    },
   ]
 }
 

@@ -1,6 +1,7 @@
 import { Shape } from '@antv/x6';
 import { getSetter, findSetter } from '../setter/index.js';
 import { NodeShape } from '../shared/nodeShape.js';
+import { addDynamicStyle } from '../utils/index.js';
 // 创建自定义文本
 function creatCustomText(graph, wd) {
   const shape = NodeShape.customText;
@@ -24,9 +25,35 @@ function creatCustomText(graph, wd) {
         font-size: ${data.setter.find(item => item.key === 'fontSize')?.value + 'px' || '16px'};
         font-weight: ${data.setter.find(item => item.key === 'fontWeight')?.value || 'normal'};
         background-color: ${data.setter.find(item => item.key === 'backgroundColor')?.value || 'transparent'};
-        animation: ${animationName} 1.5s infinite linear;
       `;
+      if (animationName) div.style.animation = `${animationName} 1.5s infinite linear`;
       div.textContent = data.setter.find(item => item.key === 'content')?.value || '文字';
+
+      // 自定义样式
+      /**
+       * example:自定义动画
+       定义跳动的动画
+        @keyframes bounce {
+          0 %, 100 % {
+            transform: translateY(3px);
+          }
+          50 % {
+            transform: translateY(-3px);
+          }
+        }
+
+      [data - cell - id="be93102b-6fba-4156-8a26-b3486dd9054c"] div > div{
+        background: linear - gradient(to right, #4a6e43, rgba(74, 110, 67, 0));
+        animation: bounce 1s infinite ease-in-out;
+      }
+
+      [data-cell-id="c2f7f46f-a20d-4edc-9769-2d0a85b1de00"] path / image {
+          animation: bounce1 1.5s infinite linear;
+      }
+       */
+      const customCss = findSetter(data.setter, 'customCss', '');
+      if (customCss) addDynamicStyle(customCss);
+
       return div;
     }
   })
@@ -78,8 +105,8 @@ function createLatestValueText(graph, wd) {
         justify-content: ${findSetter(data.setter, 'justify', 'flex-start')};
         align-items: center;
         background-color: ${findSetter(data.setter, 'backgroundColor', 'transparent')};
-        animation: ${animationName} 1.5s infinite linear;
       `;
+      if (animationName) div.style.animation = `${animationName} 1.5s infinite linear`;
       divTitle.textContent = findSetter(data.setter, 'title');
       divTitle.style.cssText = `
         color: ${findSetter(data.setter, 'titleColor', '#333')};
@@ -104,6 +131,10 @@ function createLatestValueText(graph, wd) {
       div.appendChild(divTitle);
       div.appendChild(divValue);
       div.appendChild(divUnit);
+
+      // 自定义样式
+      const customCss = findSetter(data.setter, 'customCss', '');
+      if (customCss) addDynamicStyle(customCss);
       return div;
     }
   })

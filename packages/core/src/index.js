@@ -401,12 +401,14 @@ export class WiringDesign {
           const animationName = data.setter.find(item => item.key === 'animationName')?.value;
           const markup = deepClone(node.getMarkup());
           const imageOfIds = markup.findIndex(item => item.tagName === shape);
-          markup.splice(imageOfIds, 1, {
-            ...markup[imageOfIds],
-            style: {
-              animation: `${animationName} 1.5s infinite linear`,
-            }
-          })
+          if (animationName) {
+            markup.splice(imageOfIds, 1, {
+              ...markup[imageOfIds],
+              style: {
+                animation: `${animationName} 1.5s infinite linear`,
+              }
+            })
+          }
           node.setMarkup(markup);
 
           // 设置名称
@@ -423,6 +425,10 @@ export class WiringDesign {
             });
 
           }
+
+          // 自定义样式
+          const customCss = findSetter(data.setter, 'customCss', '');
+          if (customCss) addDynamicStyle(customCss);
         }
       },
     })
@@ -442,13 +448,19 @@ export class WiringDesign {
           const animationName = data.setter.find(item => item.key === 'animationName')?.value;
           const markup = deepClone(node.getMarkup());
           const pathOfIds = markup.findIndex(item => item.tagName === 'path');
-          markup.splice(pathOfIds, 1, {
-            ...markup[pathOfIds],
-            style: {
-              animation: `${animationName} 1.5s infinite linear`,
-            }
-          })
+          if (animationName) {
+            markup.splice(pathOfIds, 1, {
+              ...markup[pathOfIds],
+              style: {
+                animation: `${animationName} 1.5s infinite linear`,
+              }
+            })
+          }
           node.setMarkup(markup);
+
+          // 自定义样式
+          const customCss = findSetter(data.setter, 'customCss', '');
+          if (customCss) addDynamicStyle(customCss);
         }
       },
       ports: {

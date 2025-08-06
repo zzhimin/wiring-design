@@ -2,18 +2,16 @@
   <div class="flex flex-col p-2">
     <div class="flex items-center justify-between">
       <div>组件名称</div>
-      <div>{{ nodeConfig?.name }}</div>
+       <a-button type="text">{{ nodeConfig?.name }}</a-button>
+    </div>
+    <div class="flex items-center justify-between">
+      <div>组件ID</div>
+      <a-button type="link" v-copy="nodeId">复制</a-button>
     </div>
     <a-divider />
     <template v-if="nodeConfig">
-      <component
-        v-for="(item, index) in nodeConfig.setter"
-        :is="item.component"
-        :wd="props.wd"
-        :nodeId="nodeId"
-        :optionModel="item"
-        class="mt-2"
-      ></component>
+      <component v-for="(item, index) in nodeConfig.setter" :is="item.component" :wd="props.wd" :nodeId="nodeId"
+        :optionModel="item" class="mt-2"></component>
     </template>
   </div>
 </template>

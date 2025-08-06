@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref, watch, onUnmounted } from 'vue';
 import * as ace from 'ace-builds';
-import '@/utils/aceConfig';
+import './aceConfig';
 
 const emit = defineEmits(['update:value'])
 
