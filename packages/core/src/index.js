@@ -12,6 +12,7 @@ import actions from './actions/index.js';
 import registerSetter, { getSetter, findSetter } from './setter/index.js';
 import { BehaviorSubject } from "rxjs";
 import { deepClone, saveJSON, addDynamicStyle, isDefinedAndNotNull } from "./utils/index.js";
+import { convertImageUrlsToBase64 } from "./utils/imageToBase64.js";
 import { nodeAnimation } from './nodes/node-animation.js';
 import { NodeShape } from './shared/nodeShape';
 
@@ -315,11 +316,19 @@ export class WiringDesign {
 
   /**
    * 导出json数据
+   * @param {Function} cb 回调函数
+   * @param {Boolean} convertImages 是否将图片转换为base64
    */
-  exportJSON(cb) {
-    const json = this.graph.toJSON();
+  async exportJSON(cb = null, convertImages = true) {
+    let json = this.graph.toJSON();
     json['bgColor'] = this.config.background.color;
-    this.graph.toJSON();
+    if (convertImages) {
+      try {
+        json = await convertImageUrlsToBase64(json);
+      } catch (error) {
+        console.error('转换过程中出错:', error);
+      }
+    }
     saveJSON(json, "wiring-design.json");
     cb && cb(json);
   }
