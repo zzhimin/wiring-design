@@ -1,7 +1,7 @@
 import { Shape } from '@antv/x6';
 import { getSetter, findSetter } from '../setter/index.js';
 import { NodeShape } from '../shared/nodeShape.js';
-import { addDynamicStyle } from '../utils/index.js';
+import { addDynamicStyle, getRandomNumber } from '../utils/index.js';
 // 创建自定义文本
 function creatCustomText(graph, wd) {
   const shape = NodeShape.customText;
@@ -22,7 +22,7 @@ function creatCustomText(graph, wd) {
         justify-content: center;
         align-items: center;
         color: ${data.setter.find(item => item.key === 'color')?.value || '#333333'};
-        font-size: ${data.setter.find(item => item.key === 'fontSize')?.value + 'px' || '16px'};
+        font-size: ${findSetter(data.setter, 'fontSize', '16')}px;
         font-weight: ${data.setter.find(item => item.key === 'fontWeight')?.value || 'normal'};
         background-color: ${data.setter.find(item => item.key === 'backgroundColor')?.value || 'transparent'};
       `;
@@ -82,6 +82,7 @@ function creatCustomSvg(wd) {
   }, [])
 }
 
+let timer = null;
 // 创建自定义最新值部件
 function createLatestValueText(graph, wd) {
   const shape = NodeShape.latestValue;
@@ -110,21 +111,39 @@ function createLatestValueText(graph, wd) {
       divTitle.textContent = findSetter(data.setter, 'title');
       divTitle.style.cssText = `
         color: ${findSetter(data.setter, 'titleColor', '#333')};
-        font-size: ${findSetter(data.setter, 'titleFontSize', '16px')};
+        font-size: ${findSetter(data.setter, 'titleFontSize', '16')}px;
         font-weight: ${findSetter(data.setter, 'titleFontWeight', 'normal')};
         margin-right: 5px;
       `;
-      divValue.textContent = '最新值';
+
+      /**
+       * 因没有后端，所以这里模拟数据，后续采用sse实现数据更新
+       * sse实现参考：https://juejin.cn/post/7524911920320397363
+       */
+      const device = findSetter(data.setter, 'device');
+      const telemetryKey = findSetter(data.setter, 'telemetryKey');
+      if (device && telemetryKey) {
+        // TODO sse实现数据更新
+        divValue.textContent = '功能待实现'
+      } else {
+        // 模拟数据
+        timer && clearInterval(timer);
+        timer = setInterval(() => {
+          divValue.textContent = getRandomNumber(0, 100, 2);
+        }, 1000);
+        divValue.textContent = getRandomNumber(0, 100, 2);
+      }
       divValue.style.cssText = `
         color: ${findSetter(data.setter, 'valueColor', '#333')};
-        font-size: ${findSetter(data.setter, 'valueFontSize', '16px')};
+        font-size: ${findSetter(data.setter, 'valueFontSize', '16')}px;
         font-weight: ${findSetter(data.setter, 'valueFontWeight', 'normal')};
         margin-right: 5px;
       `;
+
       divUnit.textContent = findSetter(data.setter, 'unit');
       divUnit.style.cssText = `
         color: ${findSetter(data.setter, 'unitColor', '#333')};
-        font-size: ${findSetter(data.setter, 'unitFontSize', '16px')};
+        font-size: ${findSetter(data.setter, 'unitFontSize', '16')}px;
         font-weight: ${findSetter(data.setter, 'unitFontWeight', 'normal')};
       `;
 

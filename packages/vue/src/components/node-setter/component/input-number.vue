@@ -1,5 +1,5 @@
 <template>
-  <div class="flex">
+  <div class="flex items-center">
     <div class="w-[40%]">{{ props.optionModel.label }}</div>
     <div class="flex-1">
       <a-input-number class="w-full" v-model:value="val" :placeholder="props.optionModel.placeholder" />

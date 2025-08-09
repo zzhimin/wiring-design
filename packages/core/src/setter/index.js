@@ -162,6 +162,22 @@ export default function registerSetter(wd) {
         ...defaultSetter(wd),
         {
           component: 'input-setter',
+          key: 'device',
+          setType: 'setData',
+          label: '设备id',
+          value: '',
+          placeholder: '不填则为模拟数据',
+        },
+        {
+          component: 'input-setter',
+          key: 'telemetryKey',
+          setType: 'setData',
+          label: '遥测key',
+          value: '',
+          placeholder: '设备的遥测key',
+        },
+        {
+          component: 'input-setter',
           key: 'title',
           setType: 'setData',
           label: '标题',

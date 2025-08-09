@@ -12,7 +12,7 @@ export function saveJSON(data, filename = "wiring-design.json") {
 
   try {
     // Convert to formatted JSON if it's an object
-    const jsonString = typeof data === "object" 
+    const jsonString = typeof data === "object"
       ? JSON.stringify(data, null, 2)  // 2-space indentation is more standard
       : data;
 
@@ -20,14 +20,14 @@ export function saveJSON(data, filename = "wiring-design.json") {
     const blob = new Blob([jsonString], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
-    
+
     a.href = url;
     a.download = filename;
     a.style.display = "none";
-    
+
     document.body.appendChild(a);
     a.click();
-    
+
     // Clean up
     setTimeout(() => {
       document.body.removeChild(a);
@@ -47,12 +47,12 @@ export function addDynamicStyle(cssText) {
   // 创建style元素
   const styleElement = document.createElement('style');
   styleElement.type = 'text/css';
-  
+
   // 处理传入的CSS文本（支持字符串或数组）
-  let cssContent = Array.isArray(cssText) 
-    ? cssText.join('\n') 
+  let cssContent = Array.isArray(cssText)
+    ? cssText.join('\n')
     : cssText;
-  
+
   // 将CSS内容添加到style元素
   if (styleElement.styleSheet) {
     // IE支持
@@ -61,10 +61,10 @@ export function addDynamicStyle(cssText) {
     // 现代浏览器支持
     styleElement.appendChild(document.createTextNode(cssContent));
   }
-  
+
   // 将style元素添加到head
   document.head.appendChild(styleElement);
-  
+
   return styleElement;
 }
 
@@ -82,7 +82,7 @@ export function deepClone(target, ignoreFields) {
     return cp.map((n) => deepClone(n));
   }
   if (typeof target === 'object' && target !== {}) {
-    const cp = {...target};
+    const cp = { ...target };
     Object.keys(cp).forEach(k => {
       if (!ignoreFields || ignoreFields.indexOf(k) === -1) {
         cp[k] = deepClone(cp[k]);
@@ -95,4 +95,22 @@ export function deepClone(target, ignoreFields) {
 
 export function isDefinedAndNotNull(value) {
   return typeof value !== 'undefined' && value !== null && value !== '';
+}
+
+/**
+ * 生成指定范围内的随机数
+ * @param {number} min - 最小值
+ * @param {number} max - 最大值
+ * @param {number} [decimalPlaces=0] - 保留的小数位数，默认为0（整数）
+ */
+export function getRandomNumber(min, max, decimalPlaces = 0) {
+  min = Number(min);
+  max = Number(max);
+  // 如果min大于max，交换它们
+  if (min > max) {
+    [min, max] = [max, min];
+  }
+  const random = Math.random() * (max - min) + min;
+  const factor = Math.pow(10, decimalPlaces);
+  return Math.round(random * factor) / factor;
 }

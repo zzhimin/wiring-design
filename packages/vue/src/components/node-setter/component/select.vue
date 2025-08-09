@@ -1,5 +1,5 @@
 <template>
-  <div class="flex">
+  <div class="flex items-center">
     <div class="w-[40%]">{{ props.optionModel.label }}</div>
     <div class="flex-1">
       <a-select
