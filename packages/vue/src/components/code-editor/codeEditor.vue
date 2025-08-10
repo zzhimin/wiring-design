@@ -24,6 +24,7 @@ const codeEditRef = ref(null)
 
 const editor = ref(null);
 
+const isDev = import.meta.env.DEV;
 
 function createEditor() {
   const editorElement = codeEditRef.value;
@@ -70,7 +71,7 @@ defineExpose({
     <label class="absolute top-[10px] right-[10px] z-10 flex items-center">
       <span class="bg-[#f3f3f3] py-[2px] px-[5px] color-[#47acc4]">{{ props.mode }}</span>
       <span @click="isFullscreen = !isFullscreen" class="w-[25px] h-[25px] bg-[#f3f3f3] rounded-full cursor-pointer">
-        <img class="w-full h-full" :src="`/wiring-design/${isFullscreen ? 'exitfullscreen' : 'fullscreen'}.png`">
+        <img class="w-full h-full" :src="`${isDev ? '/' : '/wiring-design/'}${isFullscreen ? 'exitfullscreen' : 'fullscreen'}.png`">
       </span>
     </label>
     <div ref="codeEditRef" style="height: 100%;width: 100%;"></div>

@@ -10,5 +10,9 @@ export const setterProps = {
   optionModel: {
     type: Object,
     required: true,
+  },
+  nodeConfig: {
+    type: Object,
+    required: true,
   }
 }

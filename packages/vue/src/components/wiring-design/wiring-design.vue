@@ -17,7 +17,7 @@ onMounted(() => {
     config: props.config,
     stencilContainer: stencilContainer.value,
   });
-  console.log('wd :>> ', wd.value);
+  // console.log('wd :>> ', wd.value);
 })
 </script>
 

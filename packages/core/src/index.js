@@ -315,6 +315,15 @@ export class WiringDesign {
   }
 
   /**
+   * 重新渲染setter
+   */
+  buildSetterForm() {
+    if (this.selectNode$.value) {
+      this.selectNode$.next(this.selectNode$.value);
+    }
+  }
+
+  /**
    * 导出json数据
    * @param {Function} cb 回调函数
    * @param {Boolean} convertImages 是否将图片转换为base64

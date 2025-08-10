@@ -82,7 +82,6 @@ function creatCustomSvg(wd) {
   }, [])
 }
 
-let timer = null;
 // 创建自定义最新值部件
 function createLatestValueText(graph, wd) {
   const shape = NodeShape.latestValue;
@@ -105,7 +104,7 @@ function createLatestValueText(graph, wd) {
         display: flex;
         justify-content: ${findSetter(data.setter, 'justify', 'flex-start')};
         align-items: center;
-        background-color: ${findSetter(data.setter, 'backgroundColor', 'transparent')};
+        background-color: ${findSetter(data.setter, 'backgroundColor', '#00000000')};
       `;
       if (animationName) div.style.animation = `${animationName} 1.5s infinite linear`;
       divTitle.textContent = findSetter(data.setter, 'title');
@@ -120,18 +119,21 @@ function createLatestValueText(graph, wd) {
        * 因没有后端，所以这里模拟数据，后续采用sse实现数据更新
        * sse实现参考：https://juejin.cn/post/7524911920320397363
        */
-      const device = findSetter(data.setter, 'device');
-      const telemetryKey = findSetter(data.setter, 'telemetryKey');
-      if (device && telemetryKey) {
+      const dataType = findSetter(data.setter, 'dataType');
+      if (dataType == 'mock') {
+        // 模拟数据
+        const mockMax = findSetter(data.setter, 'mockMax');
+        const mockMin = findSetter(data.setter, 'mockMin');
+        const decimalPlaces = findSetter(data.setter, 'decimalPlaces');
+        const interval = findSetter(data.setter, 'interval');
+        data.timer && clearInterval(data.timer);
+        data.timer = setInterval(() => {
+          divValue.textContent = getRandomNumber(mockMax, mockMin, decimalPlaces);
+        }, interval);
+        divValue.textContent = getRandomNumber(mockMax, mockMin, decimalPlaces);
+      } else {
         // TODO sse实现数据更新
         divValue.textContent = '功能待实现'
-      } else {
-        // 模拟数据
-        timer && clearInterval(timer);
-        timer = setInterval(() => {
-          divValue.textContent = getRandomNumber(0, 100, 2);
-        }, 1000);
-        divValue.textContent = getRandomNumber(0, 100, 2);
       }
       divValue.style.cssText = `
         color: ${findSetter(data.setter, 'valueColor', '#333')};
@@ -159,7 +161,10 @@ function createLatestValueText(graph, wd) {
   })
   return graph.createNode({
     shape,
-    data: getSetter(shape, wd),
+    data: {
+      ...getSetter(shape, wd),
+      timer: null,
+    },
   });
 }
 

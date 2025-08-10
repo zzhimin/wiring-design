@@ -3,7 +3,7 @@ import WdDesign from '@/components/wiring-design/wiring-design.vue';
 import AddAssets from '@/components/modal/add-assets.vue';
 
 const open = ref(false);
-const wd = ref(null);
+const wd = ref({});
 const config = ref({
   background: {
     color: '#F2F7FA',

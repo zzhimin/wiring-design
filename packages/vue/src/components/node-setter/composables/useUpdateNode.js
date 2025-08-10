@@ -17,9 +17,9 @@ export function useUpdateNode(props) {
             };
           })
         }
-        node.setData(setter, {overwrite: true});
+        node.setData(setter, { overwrite: true });
         props.optionModel.value = value;
-
+        props.wd.buildSetterForm();
         // 业务data如果有update，则执行业务数据data的update方法
         if (data.update) {
           data.update(node, props.wd);

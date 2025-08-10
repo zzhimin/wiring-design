@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center">
+  <div v-if="!hide" class="flex items-center">
     <div class="w-[40%]">{{ props.optionModel.label }}</div>
     <div class="flex-1">
       <a-select
@@ -8,13 +8,16 @@
         :options="props.optionModel.options"
         :placeholder="props.optionModel.placeholder"
         allowClear
+        @change="onChange($event)"
       ></a-select>
     </div>
   </div>
 </template>
 <script setup>
 import { setterProps } from './setter-props'
-import { useUpdateNode } from './useUpdateNode'
+import { useUpdateNode } from '../composables/useUpdateNode'
+import { useChange } from '../composables/useChange'
+import { useHidden } from '../composables/useHidden'
 defineOptions({
   name: 'select-setter'
 })
@@ -22,8 +25,6 @@ defineOptions({
 const props = defineProps(setterProps)
 
 const { val } = useUpdateNode(props)
-
-onMounted(() => {
-})
-
+const { onChange } = useChange(toRaw(props))
+const hide = useHidden(props)
 </script>

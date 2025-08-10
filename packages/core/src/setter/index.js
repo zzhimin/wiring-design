@@ -96,8 +96,8 @@ export default function registerSetter(wd) {
           key: 'backgroundColor',
           setType: 'setData',
           label: '背景颜色',
-          value: 'transparent',
-          placeholder: '背景颜色, 如 transparent',
+          value: '#00000000',
+          placeholder: '背景颜色, 如 #00000000',
         }
       ]
     },
@@ -150,8 +150,8 @@ export default function registerSetter(wd) {
           key: 'bgColor',
           setType: 'setAttrs',
           label: '背景颜色',
-          value: 'transparent',
-          placeholder: '背景颜色, 如 transparent',
+          value: '#00000000',
+          placeholder: '背景颜色, 如 #00000000',
         }
       ]
     },
@@ -161,12 +161,78 @@ export default function registerSetter(wd) {
       setter: [
         ...defaultSetter(wd),
         {
+          component: 'radio-setter',
+          key: 'dataType',
+          setType: 'setData',
+          label: '数据',
+          value: 'mock',
+          radioType: 'button',
+          options: [
+            {
+              label: 'mock',
+              value: 'mock',
+            },
+            {
+              label: 'sse',
+              value: 'sse',
+              disabled: false,
+            },
+            {
+              label: 'ws',
+              value: 'ws',
+              disabled: true,
+            },
+            {
+              label: 'http',
+              value: 'http',
+              disabled: true,
+            },
+          ],
+          onChange: (value, props) => {
+          },
+        },
+        {
+          component: 'input-number-setter',
+          key: 'mockMax',
+          setType: 'setData',
+          label: '数据最大值',
+          value: 100,
+          hide: 'model.dataType !== "mock"',
+        },
+        {
+          component: 'input-number-setter',
+          key: 'mockMin',
+          setType: 'setData',
+          label: '数据最小值',
+          value: 0,
+          hide: 'model.dataType !== "mock"',
+        },
+        {
+          component: 'input-number-setter',
+          key: 'decimalPlaces',
+          setType: 'setData',
+          label: '数据小数位数',
+          value: 2,
+          hide: 'model.dataType !== "mock"',
+        },
+        {
+          component: 'input-number-setter',
+          key: 'interval',
+          setType: 'setData',
+          label: '频率(毫秒)',
+          value: 1000,
+          hide: 'model.dataType !== "mock"',
+        },
+        {
           component: 'input-setter',
           key: 'device',
           setType: 'setData',
           label: '设备id',
           value: '',
-          placeholder: '不填则为模拟数据',
+          placeholder: '设备id',
+          hide: (model) => {
+            return model.dataType !== 'sse'
+          },
         },
         {
           component: 'input-setter',
@@ -175,6 +241,9 @@ export default function registerSetter(wd) {
           label: '遥测key',
           value: '',
           placeholder: '设备的遥测key',
+          hide: (model) => {
+            return model.dataType !== 'sse'
+          },
         },
         {
           component: 'input-setter',
@@ -289,8 +358,8 @@ export default function registerSetter(wd) {
           key: 'backgroundColor',
           setType: 'setData',
           label: '背景颜色',
-          value: 'transparent',
-          placeholder: '背景颜色, 如 transparent',
+          value: '#00000000',
+          placeholder: '背景颜色, 如 #00000000',
         }
       ]
     },
